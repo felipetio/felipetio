@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital@0;1&display=swap');
+
+body {
+  margin: 0;
+  animation: breath 20s ease-in-out infinite;
+  font-family: 'Lato', 'Helvetica Neue', sans-serif;
+  color: #fff;
+  background-color:#000;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+nav {
+    background-color: #fff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);;
+}
+
+a {
+  color: #fff;
+}
+
