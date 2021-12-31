@@ -1,0 +1,24 @@
+.rounded-circle{
+    width: 100px;
+    height: auto;
+}
+
+.link-box {
+    border: 2px solid #fff;
+    padding: 15px 0;
+    font-family: 'Lato', sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: #fff;
+    position: relative;
+}
+.link-box:hover {
+    color: #000;
+    background-color: #fff;
+}
+
+@keyframes breath {
+    0%   { background-size: 100% 100vh; }
+    50% { background-size: 105% 105vh; }
+    100% { background-size: 100% 100vh; }
+}
