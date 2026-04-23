@@ -4,13 +4,23 @@ import { useContent } from '../hooks/useContent';
 import { testimonials } from '../content/testimonials';
 import Markdown from '../components/Markdown';
 import { ArrowRight, Cpu, Zap, Code } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { FEATURES } from '../features';
 
 export default function Home() {
-  const { language, setLanguage, t } = useLanguage();
+  const { language, t } = useLanguage();
   const { caseSections, aboutSections } = useContent();
   const about = aboutSections();
+  const location = useLocation();
+
+  useEffect(() => {
+    const scrollTo = (location.state as { scrollTo?: string } | null)?.scrollTo;
+    if (!scrollTo) return;
+    requestAnimationFrame(() => {
+      document.querySelector(scrollTo)?.scrollIntoView({ behavior: 'smooth' });
+    });
+  }, [location]);
 
   return (
     <div>
@@ -49,12 +59,14 @@ export default function Home() {
                 {t.hero.ctaPrimary}
                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
               </Link>
-              <a
-                href="#cases"
-                className="border border-forest text-forest px-8 py-4 rounded-full font-medium hover:bg-forest/5 transition-all"
-              >
-                {t.hero.ctaSecondary}
-              </a>
+              {FEATURES.showCases && (
+                <a
+                  href="#cases"
+                  className="border border-forest text-forest px-8 py-4 rounded-full font-medium hover:bg-forest/5 transition-all"
+                >
+                  {t.hero.ctaSecondary}
+                </a>
+              )}
             </motion.div>
           </div>
         </div>
@@ -85,15 +97,17 @@ export default function Home() {
       </section>
 
       {/* Cases */}
-      <section id="cases" className="section-padding bg-forest text-sand">
-        <div className="content-container">
-          <h2 className="text-3xl md:text-4xl mb-16 text-sand/90">{t.cases.title}</h2>
-          <CaseCarousel
-            cases={[t.cases.case1, t.cases.case2]}
-            caseSections={caseSections}
-          />
-        </div>
-      </section>
+      {FEATURES.showCases && (
+        <section id="cases" className="section-padding bg-forest text-sand">
+          <div className="content-container">
+            <h2 className="text-3xl md:text-4xl mb-16 text-sand/90">{t.cases.title}</h2>
+            <CaseCarousel
+              cases={[t.cases.case1, t.cases.case2]}
+              caseSections={caseSections}
+            />
+          </div>
+        </section>
+      )}
 
       {/* About Section - Unified Narrative */}
       <section id="about" className="section-padding bg-zinc-50 font-sans">
@@ -170,26 +184,6 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="py-12 border-t border-forest/10 bg-sand">
-        <div className="content-container flex flex-col md:flex-row justify-between items-center gap-8">
-          <div className="text-sm text-zinc-500">
-            © 2026 Felipe Vieira · {t.footer.lastUpdate}
-          </div>
-
-          <div className="flex items-center gap-6">
-            <div className="flex gap-4 text-sm font-medium">
-               <a href="https://linkedin.com" className="hover:text-forest">LinkedIn</a>
-               <a href="https://github.com" className="hover:text-forest">GitHub</a>
-            </div>
-            <button
-              onClick={() => setLanguage(language === 'pt' ? 'en' : 'pt')}
-              className="text-[10px] font-mono border border-forest/20 px-2 py-0.5 rounded hover:bg-forest hover:text-sand transition-all uppercase"
-            >
-              {language === 'pt' ? 'English' : 'Português'}
-            </button>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }
