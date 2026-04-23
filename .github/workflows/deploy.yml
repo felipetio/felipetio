@@ -5,20 +5,55 @@ on:
     branches: [main]
   workflow_dispatch:
 
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      RELEASE_DIR: /var/www/felipetio/releases/${{ github.sha }}
+      CURRENT_LINK: /var/www/felipetio/current
+      RELEASES_ROOT: /var/www/felipetio/releases
     steps:
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@v1.2.0
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run build
+
+      - name: Configure SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Trust host key
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Create release dir on VPS
+        run: |
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
+            "mkdir -p ${RELEASE_DIR}"
+
+      - name: Rsync dist to release dir
+        run: |
+          rsync -avz --delete \
+            dist/ \
+            ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${RELEASE_DIR}/
+
+      - name: Activate release and prune old
+        run: |
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} bash -s <<EOF
             set -euo pipefail
-            cd /home/felipe/projects/felipetio
-            git fetch --prune origin main
-            git reset --hard origin/main
-            npm ci
-            npm run build
+            ln -sfn ${RELEASE_DIR} ${CURRENT_LINK}
+            cd ${RELEASES_ROOT}
+            ls -1t | tail -n +4 | xargs -r -I {} rm -rf -- {}
+          EOF
