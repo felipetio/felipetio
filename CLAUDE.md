@@ -48,3 +48,4 @@ Personal portfolio and consultancy site for Felipe Vieira (felipet.io). React SP
 - Long-form prose (narratives, case studies) goes in `src/content/` as markdown files, accessed via `useContent().content(key)`
 - Testimonials live in `src/content/testimonials.ts` with bilingual `{ name, role, text }` structure
 - Markdown file naming: `{slug}.{pt|en}.md`, case files use `## section` headings as structural markers
+- `README.md` doubles as Felipe's GitHub public profile (https://github.com/felipetio). Treat it as a portfolio-facing document: English-only, audience is visitors landing on the GitHub profile. Keep it in sync with the site's positioning when offers or the narrative change.
