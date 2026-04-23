@@ -19,7 +19,14 @@ Personal portfolio and consultancy site for Felipe Vieira (felipet.io). React SP
 **Stack:** React 19, TypeScript, Vite, Tailwind CSS v4, Motion (framer-motion successor), React Router DOM v7
 
 **Structure:**
-- `src/translations.ts` - All site copy lives here as a single `translations` object with `pt` and `en` keys. Never hardcode text in components.
+- `src/translations.ts` - Short UI copy (labels, CTAs, titles, form fields) as `translations` object with `pt` and `en` keys
+- `src/content/` - Long-form prose content stored as markdown files, loaded at build time via Vite `import.meta.glob`
+  - `about/narrative.{pt,en}.md` - Full professional narrative
+  - `cases/{slug}.{pt,en}.md` - Case studies with `## context`, `## problem`, `## action`, `## result` sections
+  - `testimonials.ts` - Testimonial data (name, role, text) with bilingual support
+  - `index.ts` - Content loader: `getContent(key, language)` and `getCaseSections(slug, language)`
+- `src/hooks/useContent.ts` - `useContent()` hook returns `content(key)` and `caseSections(slug)` bound to current language
+- `src/components/Markdown.tsx` - Thin wrapper around `react-markdown` with Tailwind Typography `prose` classes
 - `src/context/LanguageContext.tsx` - `useLanguage()` hook provides `language`, `setLanguage`, and `t` (current translation object)
 - `src/pages/Home.tsx` - Single-page layout with all sections (Hero, Offers, Cases, About, Testimonials). Contains local components: `OfferCard`, `CaseCarousel`, `TestimonialCard`
 - `src/pages/Contact.tsx` - Embeds a Google Forms iframe with URL pre-fill support via `?tipo=` query param
@@ -37,4 +44,7 @@ Personal portfolio and consultancy site for Felipe Vieira (felipet.io). React SP
 
 ## Key Conventions
 
-- All user-facing text must go through `src/translations.ts`, accessed via `useLanguage().t`
+- Short UI text (labels, CTAs, titles) goes in `src/translations.ts`, accessed via `useLanguage().t`
+- Long-form prose (narratives, case studies) goes in `src/content/` as markdown files, accessed via `useContent().content(key)`
+- Testimonials live in `src/content/testimonials.ts` with bilingual `{ name, role, text }` structure
+- Markdown file naming: `{slug}.{pt|en}.md`, case files use `## section` headings as structural markers
