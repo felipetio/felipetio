@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  
+  --color-forest: #064e3b;
+  --color-sand: #fcfcf7;
+  --color-ink: #1a1a1a;
+}
+
+@layer base {
+  body {
+    @apply bg-sand text-ink font-sans selection:bg-forest selection:text-sand;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display tracking-tight font-bold;
+  }
+}
+
+.markdown-body {
+  @apply max-w-none;
+}
+
+/* Custom spacing for sections */
+.section-padding {
+  @apply py-24 md:py-32;
+}
+
+.content-container {
+  @apply max-w-7xl mx-auto px-6 md:px-12;
+}
+
+/* Specific preference: no dashes (travessão) in content, 
+   but I can't enforce this via CSS easily, 
+   I must ensure it in the text content. */
