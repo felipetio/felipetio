@@ -10,7 +10,7 @@ My choice to focus on socio-environmental impact didn't come from a market strat
 
 In practice, this means working with teams solving real problems in climate, energy, mobility, agroforestry, and environmental activism, bringing AI-native technical execution and the vision of someone who has already founded, led, and delivered in demanding environments.
 
-Education: Computer Science from USP, with a research grant from FAPESP.
+Education: USP, with a research grant from FAPESP.
 
 ## outside
 

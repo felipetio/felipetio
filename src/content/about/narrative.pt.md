@@ -10,7 +10,7 @@ Minha escolha por focar em impacto socioambiental não veio de uma estratégia d
 
 Na prática, isso significa trabalhar com times que estão resolvendo problemas reais de clima, energia, mobilidade, agrofloresta e ativismo ambiental, trazendo execução técnica AI-native e a visão de alguém que já fundou, liderou e entregou em ambientes exigentes.
 
-Formação: Ciência da Computação pela USP, com bolsa de pesquisa pela FAPESP.
+Formação: USP, com bolsa de pesquisa pela FAPESP.
 
 ## outside
 
