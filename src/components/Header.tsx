@@ -1,29 +1,18 @@
 import { motion } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
-import { Menu, X, Globe } from 'lucide-react';
+import { useScrollSpy } from '../hooks/useScrollSpy';
+import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { FEATURES } from '../features';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-const SOCIAL_LINKS = [
-  {
-    label: 'GitHub',
-    href: 'https://github.com/felipetio',
-    icon: (
-      <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
-        <path d="M12 .5C5.73.5.67 5.56.67 11.83c0 5.02 3.25 9.27 7.77 10.77.57.1.78-.25.78-.55v-1.93c-3.16.69-3.83-1.52-3.83-1.52-.52-1.32-1.27-1.67-1.27-1.67-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.67 1.24 3.32.95.1-.74.4-1.24.72-1.53-2.52-.29-5.18-1.26-5.18-5.62 0-1.24.44-2.25 1.17-3.05-.12-.29-.51-1.44.11-3 0 0 .96-.31 3.15 1.17.91-.25 1.88-.38 2.85-.38.97 0 1.94.13 2.85.38 2.18-1.48 3.14-1.17 3.14-1.17.63 1.56.24 2.71.12 3 .73.8 1.17 1.81 1.17 3.05 0 4.37-2.66 5.33-5.2 5.61.41.35.77 1.05.77 2.12v3.14c0 .3.21.66.79.55 4.51-1.5 7.76-5.75 7.76-10.77C23.33 5.56 18.27.5 12 .5z"/>
-      </svg>
-    ),
-  },
-  {
-    label: 'LinkedIn',
-    href: 'https://www.linkedin.com/in/felipetio/',
-    icon: (
-      <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
-        <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/>
-      </svg>
-    ),
-  },
+const SECTION_IDS = ['top', 'offers', 'cases', 'about', 'words', 'contact'];
+
+const navItems = [
+  { num: '01', key: 'offers' as const, href: '#offers' },
+  { num: '02', key: 'cases' as const, href: '#cases' },
+  { num: '03', key: 'about' as const, href: '#about' },
+  { num: '04', key: 'words' as const, href: '#words' },
+  { num: '05', key: 'contact' as const, href: '#contact' },
 ];
 
 export default function Header() {
@@ -32,12 +21,7 @@ export default function Header() {
   const location = useLocation();
   const navigate = useNavigate();
   const isHome = location.pathname === '/';
-
-  const navLinks = [
-    { name: t.nav.offers, href: '#ofertas' },
-    ...(FEATURES.showCases ? [{ name: t.nav.cases, href: '#cases' }] : []),
-    { name: t.nav.about, href: '#about' },
-  ];
+  const active = useScrollSpy(SECTION_IDS);
 
   const handleNavClick = (href: string) => {
     setIsOpen(false);
@@ -49,64 +33,118 @@ export default function Header() {
   };
 
   return (
-    <header className="fixed top-0 left-0 w-full z-50 bg-sand/80 backdrop-blur-sm border-b border-forest/10">
-      <div className="content-container py-4 flex justify-between items-center">
-        <Link 
-          to="/" 
-          className="font-display font-bold text-xl tracking-tight text-forest"
-          onClick={() => setIsOpen(false)}
+    <header
+      className="sticky top-0 z-50"
+      style={{
+        backdropFilter: 'blur(10px)',
+        background: 'color-mix(in oklab, var(--color-bg) 78%, transparent)',
+        borderBottom: '1px solid var(--color-hair)',
+      }}
+    >
+      <div className="shell flex items-center justify-between h-[60px]">
+        {/* Brand */}
+        <a
+          href="#top"
+          className="flex items-center gap-2.5 font-semibold -tracking-[0.01em] whitespace-nowrap flex-shrink-0"
+          onClick={(e) => {
+            e.preventDefault();
+            handleNavClick('#top');
+          }}
+          aria-label="Felipe Vieira home"
         >
-          Felipe Vieira
-        </Link>
+          <span
+            className="w-[26px] h-[26px] rounded-[7px] grid place-items-center font-mono text-[13px] font-semibold relative overflow-hidden"
+            style={{ background: 'var(--color-forest)', color: 'var(--color-bg)' }}
+          >
+            <span className="relative z-[1]">fv</span>
+            <span
+              className="absolute inset-0"
+              style={{
+                background: 'linear-gradient(135deg, transparent 50%, color-mix(in oklab, var(--color-live) 60%, transparent) 50%)',
+                opacity: 0.55,
+              }}
+            />
+          </span>
+          <span className="text-[14px]">Felipe Vieira</span>
+          <span
+            className="text-[12px] text-muted ml-1 pl-2.5 mono max-[720px]:hidden"
+            style={{ borderLeft: '1px solid var(--color-hair)' }}
+          >
+            consultancy · v2026
+          </span>
+        </a>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
+        <nav className="hidden md:flex items-center gap-[22px]">
+          {navItems.map((item) => (
             <a
-              key={link.name}
-              href={isHome ? link.href : `/${link.href}`}
-              className="text-sm font-medium hover:text-forest transition-colors"
+              key={item.key}
+              href={item.href}
+              className="text-[13px] relative py-1.5 transition-colors duration-200"
+              style={{ color: active === item.key.replace('words', 'words') ? 'var(--color-forest)' : 'var(--color-ink-2)' }}
+              data-active={active === item.key || (item.key === 'words' && active === 'words')}
               onClick={(e) => {
                 e.preventDefault();
-                handleNavClick(link.href);
+                handleNavClick(item.href);
               }}
             >
-              {link.name}
+              <span className="font-mono text-[10px] text-muted mr-1">{item.num}</span>
+              <span>{t.nav[item.key]}</span>
+              {active === item.key && (
+                <span
+                  className="absolute left-0 right-0 -bottom-px h-0.5 rounded-sm"
+                  style={{ background: 'var(--color-live)' }}
+                />
+              )}
             </a>
           ))}
-          <Link
-            to="/contato"
-            className="text-sm font-medium hover:text-forest transition-colors"
-          >
-            {t.nav.contact}
-          </Link>
-          <div className="flex items-center gap-3">
-            {SOCIAL_LINKS.map(({ label, href, icon }) => (
-              <a
-                key={label}
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={label}
-                className="text-forest/70 hover:text-forest transition-colors"
-              >
-                {icon}
-              </a>
-            ))}
-          </div>
-          <button
-            onClick={() => setLanguage(language === 'pt' ? 'en' : 'pt')}
-            className="flex items-center gap-1 text-xs font-mono border border-forest/20 px-2 py-1 rounded hover:bg-forest hover:text-sand transition-all uppercase"
-          >
-            <Globe size={12} />
-            {language}
-          </button>
         </nav>
 
-        {/* Mobile Toggle */}
-        <button className="md:hidden" onClick={() => setIsOpen(!isOpen)}>
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        {/* Right side */}
+        <div className="flex items-center gap-2.5">
+          <a href="#contact" className="pill live" onClick={(e) => { e.preventDefault(); handleNavClick('#contact'); }}>
+            <span
+              className="w-[7px] h-[7px] rounded-full"
+              style={{
+                background: 'var(--color-live)',
+                animation: 'pulse 2.2s infinite',
+              }}
+            />
+            <span>{t.nav.available}</span>
+          </a>
+          <div
+            className="inline-flex h-8 rounded-full overflow-hidden"
+            style={{ border: '1px solid var(--color-hair-strong)' }}
+            role="group"
+            aria-label="Language"
+          >
+            <button
+              onClick={() => setLanguage('en')}
+              className="px-2.5 font-mono text-[11px] transition-colors duration-200"
+              style={{
+                background: language === 'en' ? 'var(--color-forest)' : 'transparent',
+                color: language === 'en' ? 'var(--color-bg)' : 'var(--color-muted)',
+              }}
+            >
+              EN
+            </button>
+            <button
+              onClick={() => setLanguage('pt')}
+              className="px-2.5 font-mono text-[11px] transition-colors duration-200"
+              style={{
+                background: language === 'pt' ? 'var(--color-forest)' : 'transparent',
+                color: language === 'pt' ? 'var(--color-bg)' : 'var(--color-muted)',
+              }}
+            >
+              PT
+            </button>
+          </div>
+
+          {/* Mobile Toggle */}
+          <button className="md:hidden ml-1" onClick={() => setIsOpen(!isOpen)}>
+            {isOpen ? <X size={22} /> : <Menu size={22} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
@@ -114,53 +152,23 @@ export default function Header() {
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="md:hidden absolute top-full left-0 w-full bg-sand border-b border-forest/10 px-6 py-8 flex flex-col gap-6"
+          className="md:hidden absolute top-full left-0 w-full bg-bg px-6 py-8 flex flex-col gap-5"
+          style={{ borderBottom: '1px solid var(--color-hair)' }}
         >
-          {navLinks.map((link) => (
+          {navItems.map((item) => (
             <a
-              key={link.name}
-              href={isHome ? link.href : `/${link.href}`}
-              className="text-lg font-display font-medium text-forest"
+              key={item.key}
+              href={item.href}
+              className="text-lg font-medium text-forest"
               onClick={(e) => {
                 e.preventDefault();
-                handleNavClick(link.href);
+                handleNavClick(item.href);
               }}
             >
-              {link.name}
+              <span className="font-mono text-[11px] text-muted mr-2">{item.num}</span>
+              {t.nav[item.key]}
             </a>
           ))}
-          <Link
-            to="/contato"
-            className="text-lg font-display font-medium text-forest"
-            onClick={() => setIsOpen(false)}
-          >
-            {t.nav.contact}
-          </Link>
-          <div className="flex items-center gap-4 pt-2">
-            {SOCIAL_LINKS.map(({ label, href, icon }) => (
-              <a
-                key={label}
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={label}
-                className="flex items-center gap-2 text-forest/80 hover:text-forest transition-colors"
-              >
-                {icon}
-                <span className="text-sm font-medium">{label}</span>
-              </a>
-            ))}
-          </div>
-          <button
-            onClick={() => {
-              setLanguage(language === 'pt' ? 'en' : 'pt');
-              setIsOpen(false);
-            }}
-            className="flex items-center gap-2 text-sm font-mono border border-forest/20 w-fit px-4 py-2 rounded uppercase"
-          >
-            <Globe size={14} />
-            {language === 'pt' ? 'Switch to English' : 'Mudar para Português'}
-          </button>
         </motion.div>
       )}
     </header>

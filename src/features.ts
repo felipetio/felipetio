@@ -1,3 +1,3 @@
 export const FEATURES = {
-  showCases: false,
+  showCases: true,
 };

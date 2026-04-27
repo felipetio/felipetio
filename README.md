@@ -1,10 +1,8 @@
 # Felipe Vieira
 
-**Fullstack software engineer with a founder's DNA.**
+**Fullstack engineer with a founder's DNA, building tools for climate & AI.**
 
-I lead new socio-environmental impact products from zero to launch, and support existing teams in delivery cycles.
-
-Bespoke consultancy for companies that want to build with purpose and speed.
+I take new socio-environmental products from zero to launch, and help existing teams ship the deliveries that matter. Bespoke consultancy, no template.
 
 [felipet.io](https://felipet.io) · [me@felipet.io](mailto:me@felipet.io)
 
@@ -32,6 +30,16 @@ I join your team for a short, focused period. New feature, migration, integratio
 I deploy your team's AI layer: from the first useful agent to the self-maintaining flow. I leave the team trained to operate with autonomy. Optional mentoring after delivery.
 
 **Format:** Consultancy · 1 to 3 months
+
+---
+
+## Recent work
+
+**Data360 Global Challenge** · Conversational interface for official World Bank climate data.
+Stack: Chainlit, FastAPI, PostgreSQL, FastMCP, Claude API.
+
+**Tupi · AI infrastructure** · Building the AI layer at Tupi, from first useful agent to self-maintaining flows.
+Stack: TypeScript, Python, Claude Code, MCP, GitHub Actions.
 
 ---
 
