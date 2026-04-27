@@ -8,7 +8,7 @@ export const translations = {
       about: 'Sobre',
       words: 'Depoimentos',
       contact: 'Contato',
-      available: 'Disponível · maio 2026',
+      available: 'Disponível',
     },
     hero: {
       headline: 'Engenheiro de software fullstack com DNA de fundador.',
@@ -140,7 +140,7 @@ export const translations = {
       about: 'About',
       words: 'Words',
       contact: 'Contact',
-      available: 'Available · May 2026',
+      available: 'Available',
     },
     hero: {
       headline: 'Fullstack software engineer with a founder\'s DNA.',
