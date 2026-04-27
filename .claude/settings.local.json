@@ -10,8 +10,6 @@
       "Bash(git pull *)",
       "Bash(git stash *)",
       "Bash(git checkout *)",
-      "Read(//var/www/felipetio/**)",
-      "Read(//etc/caddy/**)",
       "Bash(ssh -T git@github.com)"
     ]
   }
