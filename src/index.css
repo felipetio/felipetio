@@ -218,14 +218,45 @@ body::before {
   @apply max-w-none;
 }
 
+/* ---------- contact card chips ---------- */
+.contact-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  width: fit-content;
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  font-size: 13px;
+  white-space: nowrap;
+  background: #ffffff12;
+  border: 1px solid #ffffff22;
+  color: #eaf2ec;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.contact-chip:hover {
+  background: #ffffff20;
+  border-color: #ffffff40;
+}
+
 /* ---------- offer cards ---------- */
+.offer-card {
+  border-right: 1px solid var(--color-hair);
+}
+
+.offer-card:last-child {
+  border-right: none;
+}
+
 .offer-card:hover {
   background: color-mix(in oklab, var(--color-live-soft) 30%, var(--color-paper));
 }
 
 @media (max-width: 900px) {
   .offer-card {
-    border-right: none !important;
+    border-right: none;
     border-bottom: 1px solid var(--color-hair);
   }
   .offer-card:last-child {

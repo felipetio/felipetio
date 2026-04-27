@@ -1,86 +1,65 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
+import { motion } from 'motion/react';
 import { useLanguage } from '../context/LanguageContext';
 import { useContent } from '../hooks/useContent';
+import type { CaseEntry } from '../translations';
 
-interface CaseData {
-  slug: string;
-  title: string;
-  subtitle: string;
-  tab: string;
-  context: string;
-  problem: string;
-  action: string;
-  result: string;
-  stack: string;
-}
-
-export default function CasePanel({ cases }: { cases: CaseData[] }) {
-  const { language, t } = useLanguage();
+export default function CasePanel({ cases }: { cases: readonly CaseEntry[] }) {
+  const { t } = useLanguage();
   const { caseSections } = useContent();
   const [activeIndex, setActiveIndex] = useState(0);
-  const panelRef = useRef<HTMLDivElement>(null);
 
   const currentCase = cases[activeIndex];
   const sections = caseSections(currentCase.slug);
+  const sectionLabels = t.cases.sectionLabels;
   const sectionKeys = ['context', 'problem', 'action', 'result'] as const;
   const stackTags = currentCase.stack.split(',');
-
-  const coverArt: Record<string, Record<string, string[]>> = {
-    data360: { en: ['chainlit', 'fastmcp', 'postgres'], pt: ['chainlit', 'fastmcp', 'postgres'] },
-    tupi: { en: ['12 agents', 'mcp servers', 'github actions'], pt: ['12 agentes', 'mcp servers', 'github actions'] },
-  };
-
-  function switchCase(index: number) {
-    setActiveIndex(index);
-    const panel = panelRef.current;
-    if (panel) {
-      panel.style.opacity = '0';
-      panel.style.transform = 'translateY(6px)';
-      setTimeout(() => {
-        panel.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
-        panel.style.opacity = '1';
-        panel.style.transform = 'none';
-      }, 30);
-    }
-  }
-
-  const subtitleLabel = activeIndex === 0 ? t.cases.subtitleLabel : t.cases.subtitleLabel.replace('01', '02');
-  const screenshotText = language === 'pt' ? 'placeholder · screenshot do produto' : 'placeholder · product screenshot';
+  const subtitleLabel = `// ${t.cases.caseLabel} · ${String(activeIndex + 1).padStart(2, '0')}`;
 
   return (
     <div className="grid gap-9 items-start max-[900px]:!grid-cols-1" style={{ gridTemplateColumns: '220px 1fr' }}>
       {/* Tabs */}
       <div
         className="flex flex-col gap-1 max-[900px]:flex-row max-[900px]:overflow-x-auto max-[900px]:pb-2"
-        style={{ borderLeft: '1px solid var(--color-hair)', paddingLeft: 0 }}
+        style={{ borderLeft: '1px solid var(--color-hair)' }}
         role="tablist"
       >
-        {cases.map((c, i) => (
-          <button
-            key={c.slug}
-            role="tab"
-            onClick={() => switchCase(i)}
-            className="text-left py-3 px-4 -ml-px text-[13px] leading-[1.4] flex flex-col gap-1 min-w-[200px] transition-all duration-200"
-            style={{
-              borderLeft: `2px solid ${i === activeIndex ? 'var(--color-forest)' : 'transparent'}`,
-              color: i === activeIndex ? 'var(--color-forest)' : 'var(--color-ink-2)',
-              background: i === activeIndex ? 'color-mix(in oklab, var(--color-live-soft) 30%, transparent)' : 'transparent',
-            }}
-          >
-            <span className="font-mono text-[10px] text-muted tracking-[0.04em] uppercase">{c.subtitle}</span>
-            <span className="font-medium">{c.tab}</span>
-          </button>
-        ))}
+        {cases.map((c, i) => {
+          const isActive = i === activeIndex;
+          return (
+            <button
+              key={c.slug}
+              role="tab"
+              aria-selected={isActive}
+              onClick={() => setActiveIndex(i)}
+              className="text-left py-3 px-4 -ml-px text-[13px] leading-[1.4] flex flex-col gap-1 min-w-[200px] transition-all duration-200"
+              style={{
+                borderLeft: `2px solid ${isActive ? 'var(--color-forest)' : 'transparent'}`,
+                color: isActive ? 'var(--color-forest)' : 'var(--color-ink-2)',
+                background: isActive ? 'color-mix(in oklab, var(--color-live-soft) 30%, transparent)' : 'transparent',
+              }}
+            >
+              <span className="font-mono text-[10px] text-muted tracking-[0.04em] uppercase">{c.subtitle}</span>
+              <span className="font-medium">{c.tab}</span>
+            </button>
+          );
+        })}
       </div>
 
       {/* Panel */}
-      <div ref={panelRef} className="bg-paper rounded-[20px] overflow-hidden reveal" style={{ border: '1px solid var(--color-hair)' }}>
+      <motion.div
+        key={currentCase.slug}
+        initial={{ opacity: 0, y: 6 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.35, ease: 'easeOut' }}
+        className="bg-paper rounded-[20px] overflow-hidden reveal"
+        style={{ border: '1px solid var(--color-hair)' }}
+      >
         {/* Cover */}
         <div
           className="h-[220px] relative overflow-hidden flex items-end p-[22px_26px]"
           style={{ background: 'linear-gradient(135deg, var(--color-forest) 0%, var(--color-forest-2) 100%)', color: '#e7eee9' }}
         >
-          {/* Grid bg */}
           <div
             className="absolute inset-0"
             style={{
@@ -89,7 +68,6 @@ export default function CasePanel({ cases }: { cases: CaseData[] }) {
               maskImage: 'radial-gradient(ellipse 70% 70% at 70% 30%, #000, transparent 80%)',
             }}
           />
-          {/* Glow */}
           <div
             className="absolute -right-10 -top-10 w-[220px] h-[220px] rounded-full opacity-80"
             style={{
@@ -97,26 +75,15 @@ export default function CasePanel({ cases }: { cases: CaseData[] }) {
               filter: 'blur(8px)',
             }}
           />
-          {/* Cover tag */}
           <div
             className="absolute top-[18px] left-[22px] font-mono text-[11px] tracking-[0.06em] uppercase"
             style={{ color: 'color-mix(in oklab, var(--color-live) 80%, white)' }}
           >
             {subtitleLabel}
           </div>
-          {/* Title */}
           <h3 className="relative m-0 font-medium text-[clamp(22px,2.2vw,30px)] -tracking-[0.02em] max-w-[80%]" style={{ textWrap: 'balance' }}>
             {currentCase.title}
           </h3>
-          {/* Cover art */}
-          <div className="absolute right-6 bottom-[22px] font-mono text-[11px] text-right leading-[1.6]" style={{ color: '#ffffffaa' }}>
-            {(coverArt[currentCase.slug]?.[language] || []).map((line, i) => (
-              <span key={i}>
-                {line}
-                {i < (coverArt[currentCase.slug]?.[language]?.length || 0) - 1 && <br />}
-              </span>
-            ))}
-          </div>
         </div>
 
         {/* Body */}
@@ -124,7 +91,7 @@ export default function CasePanel({ cases }: { cases: CaseData[] }) {
           {sectionKeys.map((key) => (
             <div key={key}>
               <h4 className="font-mono text-[10px] uppercase tracking-[0.18em] text-forest m-0 mb-2">
-                {currentCase[key]}
+                {sectionLabels[key]}
               </h4>
               <p className="m-0 text-ink-2 text-[12.5px] leading-[1.6]">
                 {sections[key]}
@@ -149,7 +116,7 @@ export default function CasePanel({ cases }: { cases: CaseData[] }) {
                 maskImage: 'radial-gradient(ellipse 80% 80% at 50% 50%, #000, transparent 90%)',
               }}
             />
-            <span className="relative z-[1]">{screenshotText}</span>
+            <span className="relative z-[1]">{t.cover.placeholder}</span>
           </div>
 
           {/* Stack */}
@@ -172,7 +139,7 @@ export default function CasePanel({ cases }: { cases: CaseData[] }) {
             ))}
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

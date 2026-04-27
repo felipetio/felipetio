@@ -1,29 +1,26 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 
-export function useReveal() {
-  const observerRef = useRef<IntersectionObserver | null>(null);
-
+/**
+ * Adds the `.in` class to every `.reveal` element once it scrolls into view.
+ * Re-scans the DOM whenever any of `deps` changes (e.g. on language switch),
+ * so newly mounted reveal elements are picked up.
+ */
+export function useReveal(deps: ReadonlyArray<unknown> = []) {
   useEffect(() => {
-    if (!observerRef.current) {
-      observerRef.current = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('in');
-              observerRef.current?.unobserve(entry.target);
-            }
-          });
-        },
-        { threshold: 0.1, rootMargin: '0px 0px -10% 0px' }
-      );
-    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in');
+            observer.unobserve(entry.target);
+          }
+        }
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -10% 0px' }
+    );
 
-    const elements = document.querySelectorAll('.reveal:not(.in)');
-    elements.forEach((el) => observerRef.current?.observe(el));
-
-    return () => {
-      observerRef.current?.disconnect();
-      observerRef.current = null;
-    };
-  });
+    document.querySelectorAll('.reveal:not(.in)').forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, deps);
 }

@@ -1,19 +1,19 @@
+import { useState } from 'react';
 import { motion } from 'motion/react';
+import { Menu, X } from 'lucide-react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { useScrollSpy } from '../hooks/useScrollSpy';
-import { Menu, X } from 'lucide-react';
-import { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
 
-const SECTION_IDS = ['top', 'offers', 'cases', 'about', 'words', 'contact'];
-
-const navItems = [
+const NAV_ITEMS = [
   { num: '01', key: 'offers' as const, href: '#offers' },
   { num: '02', key: 'cases' as const, href: '#cases' },
   { num: '03', key: 'about' as const, href: '#about' },
   { num: '04', key: 'words' as const, href: '#words' },
   { num: '05', key: 'contact' as const, href: '#contact' },
 ];
+
+const SECTION_IDS = ['top', ...NAV_ITEMS.map((n) => n.key)];
 
 export default function Header() {
   const { language, setLanguage, t } = useLanguage();
@@ -42,7 +42,6 @@ export default function Header() {
       }}
     >
       <div className="shell flex items-center justify-between h-[60px]">
-        {/* Brand */}
         <a
           href="#top"
           className="flex items-center gap-2.5 font-semibold -tracking-[0.01em] whitespace-nowrap flex-shrink-0"
@@ -74,41 +73,38 @@ export default function Header() {
           </span>
         </a>
 
-        {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-[22px]">
-          {navItems.map((item) => (
-            <a
-              key={item.key}
-              href={item.href}
-              className="text-[13px] relative py-1.5 transition-colors duration-200"
-              style={{ color: active === item.key.replace('words', 'words') ? 'var(--color-forest)' : 'var(--color-ink-2)' }}
-              data-active={active === item.key || (item.key === 'words' && active === 'words')}
-              onClick={(e) => {
-                e.preventDefault();
-                handleNavClick(item.href);
-              }}
-            >
-              <span className="font-mono text-[10px] text-muted mr-1">{item.num}</span>
-              <span>{t.nav[item.key]}</span>
-              {active === item.key && (
-                <span
-                  className="absolute left-0 right-0 -bottom-px h-0.5 rounded-sm"
-                  style={{ background: 'var(--color-live)' }}
-                />
-              )}
-            </a>
-          ))}
+          {NAV_ITEMS.map((item) => {
+            const isActive = active === item.key;
+            return (
+              <a
+                key={item.key}
+                href={item.href}
+                className="text-[13px] relative py-1.5 transition-colors duration-200"
+                style={{ color: isActive ? 'var(--color-forest)' : 'var(--color-ink-2)' }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNavClick(item.href);
+                }}
+              >
+                <span className="font-mono text-[10px] text-muted mr-1">{item.num}</span>
+                <span>{t.nav[item.key]}</span>
+                {isActive && (
+                  <span
+                    className="absolute left-0 right-0 -bottom-px h-0.5 rounded-sm"
+                    style={{ background: 'var(--color-live)' }}
+                  />
+                )}
+              </a>
+            );
+          })}
         </nav>
 
-        {/* Right side */}
         <div className="flex items-center gap-2.5">
           <a href="#contact" className="pill live" onClick={(e) => { e.preventDefault(); handleNavClick('#contact'); }}>
             <span
               className="w-[7px] h-[7px] rounded-full"
-              style={{
-                background: 'var(--color-live)',
-                animation: 'pulse 2.2s infinite',
-              }}
+              style={{ background: 'var(--color-live)', animation: 'pulse 2.2s infinite' }}
             />
             <span>{t.nav.available}</span>
           </a>
@@ -118,36 +114,33 @@ export default function Header() {
             role="group"
             aria-label="Language"
           >
-            <button
-              onClick={() => setLanguage('en')}
-              className="px-2.5 font-mono text-[11px] transition-colors duration-200"
-              style={{
-                background: language === 'en' ? 'var(--color-forest)' : 'transparent',
-                color: language === 'en' ? 'var(--color-bg)' : 'var(--color-muted)',
-              }}
-            >
-              EN
-            </button>
-            <button
-              onClick={() => setLanguage('pt')}
-              className="px-2.5 font-mono text-[11px] transition-colors duration-200"
-              style={{
-                background: language === 'pt' ? 'var(--color-forest)' : 'transparent',
-                color: language === 'pt' ? 'var(--color-bg)' : 'var(--color-muted)',
-              }}
-            >
-              PT
-            </button>
+            {(['en', 'pt'] as const).map((lang) => (
+              <button
+                key={lang}
+                onClick={() => setLanguage(lang)}
+                aria-pressed={language === lang}
+                className="px-2.5 font-mono text-[11px] uppercase transition-colors duration-200"
+                style={{
+                  background: language === lang ? 'var(--color-forest)' : 'transparent',
+                  color: language === lang ? 'var(--color-bg)' : 'var(--color-muted)',
+                }}
+              >
+                {lang}
+              </button>
+            ))}
           </div>
 
-          {/* Mobile Toggle */}
-          <button className="md:hidden ml-1" onClick={() => setIsOpen(!isOpen)}>
+          <button
+            className="md:hidden ml-1"
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label={isOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={isOpen}
+          >
             {isOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Menu */}
       {isOpen && (
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -155,7 +148,7 @@ export default function Header() {
           className="md:hidden absolute top-full left-0 w-full bg-bg px-6 py-8 flex flex-col gap-5"
           style={{ borderBottom: '1px solid var(--color-hair)' }}
         >
-          {navItems.map((item) => (
+          {NAV_ITEMS.map((item) => (
             <a
               key={item.key}
               href={item.href}

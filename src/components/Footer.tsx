@@ -13,7 +13,7 @@ export default function Footer() {
       }}
     >
       <div className="flex justify-between gap-4 flex-wrap">
-        <div>// felipe vieira · climate & AI consultancy</div>
+        <div>// {t.footer.tagline}</div>
         <div>{t.footer.lastUpdate}</div>
       </div>
     </footer>

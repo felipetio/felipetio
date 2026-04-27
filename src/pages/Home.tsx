@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { useContent } from '../hooks/useContent';
 import { useReveal } from '../hooks/useReveal';
@@ -9,8 +11,8 @@ import CasePanel from '../components/CasePanel';
 import Sidekick from '../components/Sidekick';
 import ContactSection from '../components/ContactSection';
 import Footer from '../components/Footer';
-import { useLocation } from 'react-router-dom';
-import { useEffect } from 'react';
+
+type OfferEntry = ReturnType<typeof useLanguage>['t']['offers']['list'][number];
 
 export default function Home() {
   const { language, t } = useLanguage();
@@ -18,7 +20,7 @@ export default function Home() {
   const about = aboutSections();
   const location = useLocation();
 
-  useReveal();
+  useReveal([language]);
 
   useEffect(() => {
     const scrollTo = (location.state as { scrollTo?: string } | null)?.scrollTo;
@@ -28,9 +30,7 @@ export default function Home() {
     });
   }, [location]);
 
-  const visibleTestimonials = testimonials.filter(
-    (tm) => tm.text[language] !== '...'
-  );
+  const visibleTestimonials = testimonials.filter((tm) => tm.text[language] !== '...');
 
   return (
     <div>
@@ -55,9 +55,7 @@ export default function Home() {
               <span>{t.hero.h1c}</span>
               <span
                 className="px-0.5"
-                style={{
-                  background: 'linear-gradient(transparent 70%, color-mix(in oklab, var(--color-live) 50%, transparent) 70%)',
-                }}
+                style={{ background: 'linear-gradient(transparent 70%, color-mix(in oklab, var(--color-live) 50%, transparent) 70%)' }}
               >
                 {t.hero.h1d}
               </span>
@@ -66,11 +64,7 @@ export default function Home() {
 
             <p
               className="text-ink-2 mb-8 m-0"
-              style={{
-                fontSize: 'clamp(16px, 1.6vw, 19px)',
-                maxWidth: '56ch',
-                textWrap: 'pretty',
-              }}
+              style={{ fontSize: 'clamp(16px, 1.6vw, 19px)', maxWidth: '56ch', textWrap: 'pretty' }}
             >
               {t.hero.lede}
             </p>
@@ -78,9 +72,7 @@ export default function Home() {
             <div className="flex flex-wrap gap-3 items-center">
               <a href="#contact" className="btn btn-primary">
                 <span>{t.hero.ctaPrimary}</span>
-                <svg className="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-                  <path d="M5 12h14M13 5l7 7-7 7" />
-                </svg>
+                <ArrowIcon />
               </a>
               <a href="#cases" className="btn btn-ghost">
                 <span>{t.hero.ctaSecondary}</span>
@@ -88,13 +80,11 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Terminal */}
           <div className="max-[980px]:hidden">
             <Terminal />
           </div>
         </div>
 
-        {/* Trust logo wall */}
         <TrustWall />
       </section>
 
@@ -114,41 +104,9 @@ export default function Home() {
           className="grid grid-cols-3 max-[900px]:grid-cols-1 rounded-[18px] overflow-hidden bg-paper"
           style={{ border: '1px solid var(--color-hair)' }}
         >
-          <OfferCard
-            num="01 / product"
-            tag={t.offers.card1.tag}
-            name={t.offers.card1.name}
-            anchor={t.offers.card1.anchor}
-            desc={t.offers.card1.description}
-            format={t.offers.card1.format}
-            formatLabel={t.offers.format}
-            cta={t.offers.cta}
-            tipo="produto-zero"
-            featured
-          />
-          <OfferCard
-            num="02 / sprint"
-            tag={t.offers.card2.tag}
-            name={t.offers.card2.name}
-            anchor={t.offers.card2.anchor}
-            desc={t.offers.card2.description}
-            format={t.offers.card2.format}
-            formatLabel={t.offers.format}
-            cta={t.offers.cta}
-            tipo="sprint"
-          />
-          <OfferCard
-            num="03 / ai"
-            tag={t.offers.card3.tag}
-            name={t.offers.card3.name}
-            anchor={t.offers.card3.anchor}
-            desc={t.offers.card3.description}
-            format={t.offers.card3.format}
-            formatLabel={t.offers.format}
-            cta={t.offers.cta}
-            tipo="ai"
-            last
-          />
+          {t.offers.list.map((offer) => (
+            <OfferCard key={offer.num} offer={offer} formatLabel={t.offers.format} cta={t.offers.cta} />
+          ))}
         </div>
       </section>
 
@@ -164,7 +122,7 @@ export default function Home() {
           <span className="mono text-[12px] text-muted hidden sm:block">{t.cases.note}</span>
         </div>
 
-        <CasePanel cases={[t.cases.case1, t.cases.case2]} />
+        <CasePanel cases={t.cases.list} />
       </section>
 
       {/* ============== ABOUT ============== */}
@@ -214,35 +172,30 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ============== CONTACT ============== */}
       <ContactSection />
-
-      {/* ============== FOOTER ============== */}
       <Footer />
     </div>
   );
 }
 
-/* ---------- OfferCard ---------- */
-function OfferCard({
-  num, tag, name, anchor, desc, format, formatLabel, cta, tipo, featured, last,
-}: {
-  num: string; tag: string; name: string; anchor: string; desc: string;
-  format: string; formatLabel: string; cta: string; tipo: string;
-  featured?: boolean; last?: boolean;
-}) {
+function ArrowIcon() {
+  return (
+    <svg className="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" aria-hidden="true">
+      <path d="M5 12h14M13 5l7 7-7 7" />
+    </svg>
+  );
+}
+
+function OfferCard({ offer, formatLabel, cta }: { offer: OfferEntry; formatLabel: string; cta: string }) {
+  const featured = 'featured' in offer && offer.featured;
   return (
     <article
       className="offer-card reveal flex flex-col gap-4 relative transition-colors duration-250 min-h-[360px]"
       style={{
         padding: '28px',
-        borderRight: last ? 'none' : '1px solid var(--color-hair)',
-        background: featured
-          ? 'color-mix(in oklab, var(--color-live-soft) 18%, var(--color-paper))'
-          : undefined,
+        background: featured ? 'color-mix(in oklab, var(--color-live-soft) 18%, var(--color-paper))' : undefined,
       }}
     >
-      {/* Featured top accent line */}
       {featured && (
         <div
           className="absolute left-0 right-0 top-0 h-0.5"
@@ -251,33 +204,29 @@ function OfferCard({
       )}
 
       <div className="font-mono text-[11px] text-muted flex items-center justify-between">
-        <span>{num}</span>
+        <span>{offer.num}</span>
         <span
           className="text-forest text-[10px] py-0.5 px-[7px] rounded-full"
           style={{ border: '1px solid color-mix(in oklab, var(--color-forest) 25%, transparent)' }}
         >
-          {tag}
+          {offer.tag}
         </span>
       </div>
 
-      <h3 className="m-0 text-[22px] font-semibold -tracking-[0.01em]">{name}</h3>
-
-      <p className="serif text-muted text-[14px] -mt-1 m-0">{anchor}</p>
-
-      <p className="text-[14px] text-ink-2 leading-[1.6] m-0">{desc}</p>
+      <h3 className="m-0 text-[22px] font-semibold -tracking-[0.01em]">{offer.name}</h3>
+      <p className="serif text-muted text-[14px] -mt-1 m-0">{offer.anchor}</p>
+      <p className="text-[14px] text-ink-2 leading-[1.6] m-0">{offer.description}</p>
 
       <div
         className="mt-auto flex items-center justify-between pt-4 font-mono text-[11px] text-muted"
         style={{ borderTop: '1px dashed var(--color-hair-strong)' }}
       >
         <span>
-          {formatLabel}: <b className="text-ink font-medium">{format}</b>
+          {formatLabel}: <b className="text-ink font-medium">{offer.format}</b>
         </span>
         <a
-          href={`#contact`}
+          href="#contact"
           className="inline-flex items-center gap-1.5 text-forest text-[12px] font-medium transition-all duration-200 hover:gap-[9px]"
-          style={{ borderBottom: '1px solid transparent' }}
-          data-tipo={tipo}
         >
           {cta}
         </a>
@@ -286,21 +235,18 @@ function OfferCard({
   );
 }
 
-/* ---------- TestimonialCard ---------- */
 function TestimonialCard({ name, logo, role, text }: { name: string; logo: string; role: string; text: string }) {
   return (
     <article
-      className="reveal rounded-2xl p-[22px] bg-paper flex flex-col gap-[18px] relative transition-all duration-250 hover:-translate-y-0.5"
+      className="reveal rounded-2xl p-[22px] bg-paper flex flex-col gap-[18px] relative transition-all duration-250 hover:-translate-y-0.5 hover:[border-color:var(--color-ink-2)]"
       style={{ border: '1px solid var(--color-hair)' }}
-      onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--color-ink-2)'; }}
-      onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--color-hair)'; }}
     >
-      {/* Decorative quotemark */}
       <span
         className="absolute top-1.5 right-[18px] font-serif text-[64px] leading-none pointer-events-none"
         style={{ color: 'color-mix(in oklab, var(--color-forest) 12%, transparent)' }}
+        aria-hidden="true"
       >
-        {'\u201C'}
+        {'“'}
       </span>
 
       <p className="text-[14.5px] text-ink-2 leading-[1.65] m-0" style={{ textWrap: 'pretty' }}>
@@ -312,7 +258,7 @@ function TestimonialCard({ name, logo, role, text }: { name: string; logo: strin
         style={{ borderTop: '1px dashed var(--color-hair-strong)' }}
       >
         <div className="w-9 h-9 rounded-[9px] overflow-hidden flex-shrink-0 bg-bg-2">
-          <img src={logo} alt={name} className="w-full h-full object-cover" />
+          <img src={logo} alt={name} className="w-full h-full object-cover" loading="lazy" />
         </div>
         <div>
           <div className="font-semibold text-[13px]">{name}</div>
