@@ -1,15 +1,15 @@
 ## bio
 
-I am a senior fullstack engineer who started as **co-founder and CTO of Grubster** (2012–2019), a restaurant reservation platform that reached #1 on the Brazilian App Store, Food category. I led engineering, product, and the negotiations that culminated in the 2018 merger with ChefsClub.
+I'm a senior fullstack engineer with a degree from USP. I've always worked at startups, until I became co-founder and CTO of Grubster (2012–2019), a restaurant reservations platform that reached #1 on the Brazilian App Store & Google Play, Food category. I led engineering and product, and took part in the negotiations that led to the merger with ChefsClub in 2018.
 
-I then spent **six years at Tesorio** (2019–2025), a US YC fintech, as a senior fullstack engineer working remotely with a US team. I built their AI-oriented Connected Financial Operations platform in Django/Python/PostgreSQL and, since 2023, helped lead the product's AI-first pivot.
+After that, I spent six years at Tesorio (2019–2025), a US YC-backed fintech, as a senior fullstack engineer working remotely with a global team. I built the cash forecasting module together with the ML team, and from 2023 onward helped lead the company's AI-first product pivot.
 
-Today I work as an independent consultant, leading new products and supporting teams in delivery cycles.
+Today I work as an independent consultant, leading new products and supporting teams through delivery cycles. Earlier in my career, I worked as a consultant building open-source systems for the Brazilian Government and the UNDP (United Nations Development Programme) through the Intelegis Program.
 
-My choice to focus on socio-environmental impact didn't come from a market strategy. I grew up celebrating nature, and field experiences, including the Amazon, showed me how our daily decisions affect communities and species that just want to live in peace. I have privileges, and ignoring the climate crisis would be failing my purpose.
+My focus on social and environmental impact didn't come from market strategy. I grew up celebrating nature, and my research and lived experiences have shown me how our daily decisions affect many communities that simply want to live in peace. Ignoring the climate and ethical crisis we face today would mean failing my own purpose.
 
-In practice, this means working with teams solving real problems in **climate, energy, mobility, agroforestry, and environmental activism**, bringing AI-native technical execution and the vision of someone who has already founded, led, and delivered in demanding environments.
+In practice, this means working with teams solving real problems in **climate, energy, mobility, agroforestry, and environmental activism**, bringing AI-native technical execution and the perspective of someone who has founded, led, and delivered in demanding environments.
 
 ## outside
 
-I live in São Francisco Xavier, in the Mantiqueira Mountains. I play in the Maracatu Baque do Xico, help organize political consciousness circles, and collaborate on activism projects connecting technology and progressive causes.
+I live in the countryside of São Paulo, in the Mantiqueira mountain range. I take part in popular culture projects like [Maracatu Baque do Xico](https://www.instagram.com/baquedoxico/) and [Bloco da Pedra Vermelha](https://www.instagram.com/blocodapedravermelha/), and I help organize political awareness circles and activism that connect technology to progressive causes.

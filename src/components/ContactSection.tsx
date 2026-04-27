@@ -27,7 +27,7 @@ export default function ContactSection() {
       </div>
 
       <div
-        className="rounded-3xl relative overflow-hidden grid gap-9 items-end max-[820px]:grid-cols-1 max-[820px]:items-start"
+        className="rounded-3xl relative overflow-hidden grid gap-9 items-end max-[820px]:!grid-cols-1 max-[820px]:items-start"
         style={{
           background: 'var(--color-forest)',
           color: '#eaf2ec',

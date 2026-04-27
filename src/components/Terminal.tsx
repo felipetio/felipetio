@@ -1,49 +1,25 @@
-import { useEffect, useRef, useState } from 'react';
-import { useLanguage } from '../context/LanguageContext';
+import { useEffect, useState } from 'react';
+
+const CTA = "Let's work together";
 
 export default function Terminal() {
-  const { t } = useLanguage();
   const [typed, setTyped] = useState('');
-  const stateRef = useRef({ li: 0, ci: 0, dir: 1 as 1 | -1 });
-  const langRef = useRef(t);
-  langRef.current = t;
 
   useEffect(() => {
-    const state = stateRef.current;
-    state.li = 0;
-    state.ci = 0;
-    state.dir = 1;
+    let ci = 0;
     let timeout: ReturnType<typeof setTimeout>;
 
     function tick() {
-      const lines = langRef.current.terminal.lines;
-      const current = lines[state.li % lines.length];
-
-      if (state.dir === 1) {
-        state.ci++;
-        setTyped(current.slice(0, state.ci));
-        if (state.ci >= current.length) {
-          state.dir = -1;
-          timeout = setTimeout(tick, 1800);
-          return;
-        }
-      } else {
-        state.ci -= 2;
-        if (state.ci < 0) state.ci = 0;
-        setTyped(current.slice(0, state.ci));
-        if (state.ci === 0) {
-          state.dir = 1;
-          state.li++;
-          timeout = setTimeout(tick, 220);
-          return;
-        }
+      ci++;
+      setTyped(CTA.slice(0, ci));
+      if (ci < CTA.length) {
+        timeout = setTimeout(tick, 60);
       }
-      timeout = setTimeout(tick, state.dir === 1 ? 38 : 22);
     }
 
-    tick();
+    timeout = setTimeout(tick, 400);
     return () => clearTimeout(timeout);
-  }, [t]);
+  }, []);
 
   return (
     <div
@@ -91,16 +67,13 @@ export default function Terminal() {
         <div className="whitespace-pre-wrap mt-2">
           <span style={{ color: 'var(--color-live)' }}>$</span>{' '}
           <span style={{ color: '#c2e8d2' }}>ls</span>{' '}
-          <span className="text-white">--focus</span>
+          <span className="text-white"> focus/</span>
         </div>
         <div className="whitespace-pre-wrap text-white">climate-tech &nbsp; energy &nbsp; mobility</div>
         <div className="whitespace-pre-wrap text-white">agroforestry &nbsp; ai-enablement</div>
         <div className="whitespace-pre-wrap mt-2">
           <span style={{ color: 'var(--color-live)' }}>$</span>{' '}
-          <span style={{ color: '#c2e8d2' }}>status</span>
-        </div>
-        <div className="whitespace-pre-wrap text-white">
-          {typed}
+          <span className="text-white">{typed}</span>
           <span
             className="ml-px"
             style={{

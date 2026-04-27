@@ -10,7 +10,7 @@ interface Testimonial {
 export const testimonials: Testimonial[] = [
   {
     name: 'Pedro De Conti',
-    logo: '/assets/tupi.png',
+    logo: '/assets/sq-tupi.png',
     role: {
       pt: 'CEO, Tupi',
       en: 'CEO, Tupi',

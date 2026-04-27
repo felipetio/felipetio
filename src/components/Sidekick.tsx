@@ -1,14 +1,18 @@
+import ReactMarkdown from 'react-markdown';
 import { useLanguage } from '../context/LanguageContext';
+import { useContent } from '../hooks/useContent';
 
 export default function Sidekick() {
   const { t } = useLanguage();
+  const { aboutSections } = useContent();
+  const about = aboutSections();
 
   const facts = [
+    { k: t.about.f5k, v: t.about.f5v, s: t.about.f5s },
     { k: t.about.f1k, v: t.about.f1v, s: t.about.f1s },
     { k: t.about.f2k, v: t.about.f2v, s: t.about.f2s },
     { k: t.about.f3k, v: t.about.f3v, s: t.about.f3s },
     { k: t.about.f4k, v: t.about.f4v, s: t.about.f4s },
-    { k: t.about.f5k, v: t.about.f5v, s: t.about.f5s },
   ];
 
   return (
@@ -41,9 +45,19 @@ export default function Sidekick() {
       <h4 className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted m-0 mt-2">
         {t.about.outsideTitle}
       </h4>
-      <p className="m-0 text-[13.5px] text-ink-2 leading-[1.65]">
-        {t.about.outside}
-      </p>
+      <div className="text-[13.5px] text-ink-2 leading-[1.65] [&_p]:m-0 [&_a]:text-forest [&_a]:underline [&_a]:underline-offset-2 [&_a:hover]:opacity-70">
+        <ReactMarkdown
+          components={{
+            a: ({ href, children }) => (
+              <a href={href} target="_blank" rel="noopener noreferrer">
+                {children}
+              </a>
+            ),
+          }}
+        >
+          {about.outside}
+        </ReactMarkdown>
+      </div>
     </aside>
   );
 }

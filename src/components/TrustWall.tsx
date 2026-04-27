@@ -2,7 +2,7 @@ import { useLanguage } from '../context/LanguageContext';
 
 const companies = [
   { name: 'InfoAmazonia', icon: '/assets/sq-infoamazonia.jpeg', roleKey: 'r4' as const },
-  { name: 'Tupi Mobilidade', icon: '/assets/tupi.png', roleKey: 'r3' as const },
+  { name: 'Tupi Mobilidade', icon: '/assets/sq-tupi.png', roleKey: 'r3' as const },
   { name: 'Tesorio Inc.', icon: '/assets/sq-tesorio.jpeg', roleKey: 'r2' as const },
   { name: 'ChefsClub', icon: '/assets/sq-chefsclub.png', roleKey: 'r1b' as const },
   { name: 'Grubster', icon: '/assets/sq-grubster.jpeg', roleKey: 'r1' as const },

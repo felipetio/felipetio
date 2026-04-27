@@ -70,7 +70,7 @@ export default function Header() {
             className="text-[12px] text-muted ml-1 pl-2.5 mono max-[720px]:hidden"
             style={{ borderLeft: '1px solid var(--color-hair)' }}
           >
-            consultancy · v2026
+            @felipetio
           </span>
         </a>
 
