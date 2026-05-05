@@ -122,6 +122,10 @@ export const translations = {
       cta: 'Entrar em contato',
       copy: 'copiado ✓',
     },
+    notFound: {
+      message: 'Página não encontrada.',
+      back: 'Voltar ao início',
+    },
     footer: {
       tagline: 'felipe vieira · consultoria clima & IA',
       lastUpdate: 'Última atualização: abril 2026',
@@ -243,6 +247,10 @@ export const translations = {
       lede: 'Tell me where you are and what you need. I read every message and reply within two business days.',
       cta: 'Get in touch',
       copy: 'copied ✓',
+    },
+    notFound: {
+      message: 'Page not found.',
+      back: 'Back to home',
     },
     footer: {
       tagline: 'felipe vieira · climate & AI consultancy',

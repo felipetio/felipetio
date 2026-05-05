@@ -4,6 +4,7 @@ import Header from './components/Header';
 import Rail from './components/Rail';
 import Home from './pages/Home';
 import Contact from './pages/Contact';
+import NotFound from './pages/NotFound';
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/contato" element={<Contact />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </main>
         </div>
