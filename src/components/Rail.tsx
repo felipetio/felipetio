@@ -2,8 +2,6 @@ import { useScrollSpy } from '../hooks/useScrollSpy';
 
 const sections = [
   { id: 'top', label: 'top' },
-  { id: 'offers', label: 'offers' },
-  { id: 'cases', label: 'portfolio' },
   { id: 'about', label: 'about' },
   { id: 'words', label: 'testimonials' },
   { id: 'contact', label: 'contact' },

@@ -28,7 +28,7 @@ function buildContentMap(): ContentMap {
 
 const contentMap = buildContentMap();
 
-export type ContentKey = 'about.narrative' | 'cases.data360' | 'cases.tupi';
+export type ContentKey = 'about.narrative';
 
 export function getContent(key: ContentKey, language: Language): string {
   const entry = contentMap[key];
@@ -46,24 +46,6 @@ function parseSections(raw: string): Record<string, string> {
     sections[parts[i].trim()] = parts[i + 1]?.trim() || '';
   }
   return sections;
-}
-
-interface CaseSections {
-  context: string;
-  problem: string;
-  action: string;
-  result: string;
-}
-
-export function getCaseSections(slug: string, language: Language): CaseSections {
-  const raw = getContent(`cases.${slug}` as ContentKey, language);
-  const parsed = parseSections(raw);
-  return {
-    context: parsed.context || '',
-    problem: parsed.problem || '',
-    action: parsed.action || '',
-    result: parsed.result || '',
-  };
 }
 
 interface AboutSections {

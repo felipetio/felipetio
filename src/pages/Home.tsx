@@ -7,12 +7,9 @@ import { testimonials } from '../content/testimonials';
 import Markdown from '../components/Markdown';
 import Terminal from '../components/Terminal';
 import TrustWall from '../components/TrustWall';
-import CasePanel from '../components/CasePanel';
 import Sidekick from '../components/Sidekick';
 import ContactSection from '../components/ContactSection';
 import Footer from '../components/Footer';
-
-type OfferEntry = ReturnType<typeof useLanguage>['t']['offers']['list'][number];
 
 export default function Home() {
   const { language, t } = useLanguage();
@@ -74,9 +71,6 @@ export default function Home() {
                 <span>{t.hero.ctaPrimary}</span>
                 <ArrowIcon />
               </a>
-              <a href="#cases" className="btn btn-ghost">
-                <span>{t.hero.ctaSecondary}</span>
-              </a>
             </div>
           </div>
 
@@ -86,43 +80,6 @@ export default function Home() {
         </div>
 
         <TrustWall />
-      </section>
-
-      {/* ============== OFFERS ============== */}
-      <section id="offers" className="shell" style={{ paddingTop: 'clamp(32px, 5vh, 64px)', scrollMarginTop: '80px' }}>
-        <div className="section-head">
-          <div>
-            <div className="section-tag">
-              <b>~/offers</b> <span>— {t.offers.tag}</span>
-            </div>
-            <h2 className="section-title">{t.offers.title}</h2>
-          </div>
-          <a href="#contact" className="mono text-[12px] text-muted hidden sm:block">→ {t.offers.note}</a>
-        </div>
-
-        <div
-          className="grid grid-cols-3 max-[900px]:grid-cols-1 rounded-[18px] overflow-hidden bg-paper"
-          style={{ border: '1px solid var(--color-hair)' }}
-        >
-          {t.offers.list.map((offer) => (
-            <OfferCard key={offer.num} offer={offer} formatLabel={t.offers.format} cta={t.offers.cta} />
-          ))}
-        </div>
-      </section>
-
-      {/* ============== CASES ============== */}
-      <section id="cases" className="shell" style={{ paddingTop: 'clamp(32px, 5vh, 64px)', scrollMarginTop: '80px' }}>
-        <div className="section-head">
-          <div>
-            <div className="section-tag">
-              <b>~/portfolio</b> <span>— {t.cases.tag}</span>
-            </div>
-            <h2 className="section-title">{t.cases.title}</h2>
-          </div>
-          <span className="mono text-[12px] text-muted hidden sm:block">{t.cases.note}</span>
-        </div>
-
-        <CasePanel cases={t.cases.list} />
       </section>
 
       {/* ============== ABOUT ============== */}
@@ -183,55 +140,6 @@ function ArrowIcon() {
     <svg className="arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" aria-hidden="true">
       <path d="M5 12h14M13 5l7 7-7 7" />
     </svg>
-  );
-}
-
-function OfferCard({ offer, formatLabel, cta }: { offer: OfferEntry; formatLabel: string; cta: string }) {
-  const featured = 'featured' in offer && offer.featured;
-  return (
-    <article
-      className="offer-card reveal flex flex-col gap-4 relative transition-colors duration-250 min-h-[360px]"
-      style={{
-        padding: '28px',
-        background: featured ? 'color-mix(in oklab, var(--color-live-soft) 18%, var(--color-paper))' : undefined,
-      }}
-    >
-      {featured && (
-        <div
-          className="absolute left-0 right-0 top-0 h-0.5"
-          style={{ background: 'color-mix(in oklab, var(--color-live) 70%, transparent)' }}
-        />
-      )}
-
-      <div className="font-mono text-[11px] text-muted flex items-center justify-between">
-        <span>{offer.num}</span>
-        <span
-          className="text-forest text-[10px] py-0.5 px-[7px] rounded-full"
-          style={{ border: '1px solid color-mix(in oklab, var(--color-forest) 25%, transparent)' }}
-        >
-          {offer.tag}
-        </span>
-      </div>
-
-      <h3 className="m-0 text-[22px] font-semibold -tracking-[0.01em]">{offer.name}</h3>
-      <p className="serif text-muted text-[14px] -mt-1 m-0">{offer.anchor}</p>
-      <p className="text-[14px] text-ink-2 leading-[1.6] m-0">{offer.description}</p>
-
-      <div
-        className="mt-auto flex items-center justify-between pt-4 font-mono text-[11px] text-muted"
-        style={{ borderTop: '1px dashed var(--color-hair-strong)' }}
-      >
-        <span>
-          {formatLabel}: <b className="text-ink font-medium">{offer.format}</b>
-        </span>
-        <a
-          href="#contact"
-          className="inline-flex items-center gap-1.5 text-forest text-[12px] font-medium transition-all duration-200 hover:gap-[9px]"
-        >
-          {cta}
-        </a>
-      </div>
-    </article>
   );
 }
 

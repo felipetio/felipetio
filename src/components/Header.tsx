@@ -6,11 +6,9 @@ import { useLanguage } from '../context/LanguageContext';
 import { useScrollSpy } from '../hooks/useScrollSpy';
 
 const NAV_ITEMS = [
-  { num: '01', key: 'offers' as const, href: '#offers' },
-  { num: '02', key: 'cases' as const, href: '#cases' },
-  { num: '03', key: 'about' as const, href: '#about' },
-  { num: '04', key: 'words' as const, href: '#words' },
-  { num: '05', key: 'contact' as const, href: '#contact' },
+  { num: '01', key: 'about' as const, href: '#about' },
+  { num: '02', key: 'words' as const, href: '#words' },
+  { num: '03', key: 'contact' as const, href: '#contact' },
 ];
 
 const SECTION_IDS = ['top', ...NAV_ITEMS.map((n) => n.key)];
@@ -101,13 +99,6 @@ export default function Header() {
         </nav>
 
         <div className="flex items-center gap-2.5">
-          <a href="#contact" className="pill live" onClick={(e) => { e.preventDefault(); handleNavClick('#contact'); }}>
-            <span
-              className="w-[7px] h-[7px] rounded-full"
-              style={{ background: 'var(--color-live)', animation: 'pulse 2.2s infinite' }}
-            />
-            <span>{t.nav.available}</span>
-          </a>
           <div
             className="inline-flex h-8 rounded-full overflow-hidden"
             style={{ border: '1px solid var(--color-hair-strong)' }}

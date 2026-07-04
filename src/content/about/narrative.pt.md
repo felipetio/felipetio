@@ -4,7 +4,7 @@ Sou engenheiro fullstack sênior formado na USP. Sempre trabalhei em startups, a
 
 Depois passei seis anos na Tesorio (2019–2025), uma fintech americana da YC, como engenheiro fullstack sênior trabalhando remoto com um time global. Construí o módulo de previsão de caixa junto com o time de ML e, desde 2023, ajudei a liderar o pivô AI-first do produto.
 
-Hoje atuo como consultor independente, liderando novos produtos e apoiando times em ciclos de entrega. Antes disso, fui consultor construindo sistemas open-source para o Governo Brasileiro e o PNUD (Programa das Nações Unidas para o Desenvolvimento), via Programa Intelegis.
+Hoje sou Engenheiro de Software Principal na Tupi, construindo a infraestrutura de IA e de plataforma por trás da rede de mobilidade elétrica do Brasil. Antes disso, fui consultor construindo sistemas open-source para o Governo Brasileiro e o PNUD (Programa das Nações Unidas para o Desenvolvimento), via Programa Interlegis.
 
 Minha escolha por foco em impacto socioambiental não veio de estratégia de mercado. Cresci celebrando a natureza, e minhas pesquisas e vivências me mostraram como nossas decisões diárias afetam diversas comunidades que só querem viver em paz. Ignorar a crise climática e ética que vivemos hoje seria falhar com meu propósito.
 

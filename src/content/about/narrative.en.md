@@ -4,7 +4,7 @@ I'm a senior fullstack engineer with a degree from USP. I've always worked at st
 
 After that, I spent six years at Tesorio (2019–2025), a US YC-backed fintech, as a senior fullstack engineer working remotely with a global team. I built the cash forecasting module together with the ML team, and from 2023 onward helped lead the company's AI-first product pivot.
 
-Today I work as an independent consultant, leading new products and supporting teams through delivery cycles. Earlier in my career, I worked as a consultant building open-source systems for the Brazilian Government and the UNDP (United Nations Development Programme) through the Intelegis Program.
+Today I'm a Principal Software Engineer at Tupi, building the AI and platform infrastructure behind Brazil's electric-mobility network. Earlier in my career, I worked as a consultant building open-source systems for the Brazilian Government and the UNDP (United Nations Development Programme) through the Interlegis Program.
 
 My focus on social and environmental impact didn't come from market strategy. I grew up celebrating nature, and my research and lived experiences have shown me how our daily decisions affect many communities that simply want to live in peace. Ignoring the climate and ethical crisis we face today would mean failing my own purpose.
 
